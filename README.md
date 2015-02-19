@@ -12,44 +12,23 @@ By software engineering standards, these scripts could appear appallingly ugly--
 
 Attempts were made to keep the largest possible areas contiguous for improved contour-drawing performance in desktop environment.  Stability of Esri's 32-bit application led to an adaptation where the terrain was split into five sectors based on somewhat subtle characteristics.  
 
-### Installation
+### Use
 
-* Select **File > Extension Manager...** (or click the "brick" icon in the toolbar)
-* Search for "Markdown Preview"
-* Click the **Install** button
+* have access to awk, either through your OS or via Cygwin
+* In ArcGIS, at least try the Contour tool to verify that it can't work all at once
+* If not, then get a feel for the Contour List tool, prepare a File Geodatabase and possibly a Feature Dataset within it to receive contours
+* In the Contour List dialog, provide input grid and output File Geodatabasae, and a couple of contour values to confirm source and destination work
+* From the Geoprocessing > Results window, convert Contour List to a Python snippet for use as a template with your paths to test the AWK script
+* Edit the clist0.awk to fit your paths, and the desired range of outputs
 
-### How To Use
-When a markdown document (with extension ".md" or ".markdown") is open, a markdown icon is shown in the 
-toolbar at the top of the Brackets window. Click this icon to open the preview panel. The panel can be 
-resized vertically.
+Then provide input and redirect output to a Python snippet for pasting into ArcCatalog `$ awk -f clist0.awk > clist0.py`
+The script can generate thousands of ContourList calls, each with unique and somewhat informative Feature Class names.
 
-The preview is updated as you edit the document. You can hover over links to see the href in a tooltip,
-or click them to open in your default browser.
+### Phrasing
 
-Hover over the preview area to show the settings "gear" icon. Click this icon to change the settings.
+This script exists to automate the search for the most extensive grid that will not crash ArcMap contouring, while capturing progress frequently enough with complete Feature Class writes to the File Geodatabase.  Ideally, the input grid need not be split into very many pieces, so that resulting contours are more continuous.  Likewise, a given Feature Class should not have so many contour levels that it takes tens of minutes to complete.
 
-### Settings
-
-#### Format
-By default, the document is rendered as standard Markdown. Change the dropdown to "GitHub-Flavored (GFM)" 
-to see the Markdown as it would appear in a GitHub issue, pull request, or comment.
-
-#### Theme
-There are three themes available: 
-
-* Light - Black text on a light background, similar to GitHub wiki pages.
-* Dark - Light text on a dark background.
-* Classic - Black text with a serif font on a light background
-
-#### Sync scroll position
-When checked, scrolling in the editor scrolls the preview to roughly the same location. 
-The scroll position of the preview is based on the scroll position of the source document, so the 
-position may be out of sync if you have really long lines in your source file. Scroll synchronization
-works best when the preview and code view are the same height.
+There are subtle aspects of the input terrain that may cause excessively long contours, at certain elevations.  Near these elevations, far fewer contour lines should be created from a single call to Contour List.  Near the highest elevations, contours may be ringing a summit and many more can be run.
 
 ### Credits
-This extension uses the following open source components:
-
-* [Marked](https://github.com/chjj/marked) - A markdown parser written in JavaScript
-* [markdown-css-themes](https://github.com/jasonm23/markdown-css-themes) - The themes are based on the "Swiss" theme
-* [markdown-mark](https://github.com/dcurtis/markdown-mark) - The icon used in the toolbar
+This AWK script generates ArcPy that iterates through elevation ranges while creating descriptive Feature Class names at every iteration.
