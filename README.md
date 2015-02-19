@@ -29,16 +29,14 @@ The script can generate thousands of ContourList calls, each with unique and som
 
 ### Phrasing
 
-
 This script exists to automate the search for the most extensive grid that will not crash ArcMap contouring, while capturing progress frequently enough with complete Feature Class writes to the File Geodatabase.  Ideally, the input grid need not be split into very many pieces, so that resulting contours are more continuous.  Likewise, a given Feature Class should not have so many contour levels that it takes tens of minutes to complete.
 
 There are subtle aspects of the input terrain that may cause excessively long contours, at certain elevations.  Near these elevations, far fewer contour lines should be created from a single call to Contour List.  Near the highest elevations, contours may be ringing a summit and many more can be run.
 
-#### Sync scroll position
-When checked, scrolling in the editor scrolls the preview to roughly the same location. 
-The scroll position of the preview is based on the scroll position of the source document, so the 
-position may be out of sync if you have really long lines in your source file. Scroll synchronization
-works best when the preview and code view are the same height.
+### Example product
+
+A set of these scripts were used during 2014-11 to produce a 1m-interval topo-bathy contour set for over 1000 square km.
+The Esri File Geodatabase that contains the contours, merged to five Feature Classes of total size 3 GB, [posted for one's downloading convenience](http://3dg.is/Marin_NHD_Local/Marin_NHD_west_contours_201502.zip).  If explored, it is recommended to extract the File GDB archive to a local SSD and view in Esri ArcMap 10.3
 
 ### Credits
 This AWK script generates ArcPy that iterates through elevation ranges while creating descriptive Feature Class names at every iteration.
